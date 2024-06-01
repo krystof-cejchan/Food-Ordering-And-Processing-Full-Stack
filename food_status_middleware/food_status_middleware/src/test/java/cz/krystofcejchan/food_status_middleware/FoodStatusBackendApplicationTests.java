@@ -1,4 +1,4 @@
-package cz.krystofcejchan.food_status_backend;
+package cz.krystofcejchan.food_status_middleware;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>cz.krystofcejchan</groupId>
-	<artifactId>food_status_backend</artifactId>
+	<artifactId>food_status_middleware</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>food_status_backend</name>
-	<description>BackEnd App for Managing Food Orders</description>
+	<name>food_status_middleware</name>
+	<description>Middleware App for Managing Food Orders</description>
 	<properties>
 		<java.version>21</java.version>
 	</properties>
