@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -22,7 +23,5 @@ public class Food implements Serializable {
     private String title;
     @Column(nullable = false, precision = 2)
     private Double price;
-    @ManyToOne
-    @JoinColumn(name = "order_id")
-    private Order order;
+
 }

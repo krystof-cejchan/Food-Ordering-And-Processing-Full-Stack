@@ -2,7 +2,6 @@ package cz.krystofcejchan.food_and_order_middleware.services;
 
 import cz.krystofcejchan.food_and_order_middleware.entities.Food;
 import cz.krystofcejchan.food_and_order_middleware.entities.Order;
-import cz.krystofcejchan.food_and_order_middleware.entities.OrderFood;
 import cz.krystofcejchan.food_and_order_middleware.repositories.FoodRepository;
 import cz.krystofcejchan.food_and_order_middleware.repositories.OrderRepository;
 import cz.krystofcejchan.food_and_order_middleware.support_classes.enums.OrderStatus;
@@ -43,7 +42,7 @@ public class OrderService {
         return orderRepository.findById(id).orElseThrow(() -> new EntityNotFound(this));
     }
 
-    public List<OrderFood> findFoodByOrderId(String id) {
+    public List<Food> findFoodByOrderId(String id) {
         return orderRepository.findById(id).orElseThrow(EntityNotFound::new).getItems();
     }
 }

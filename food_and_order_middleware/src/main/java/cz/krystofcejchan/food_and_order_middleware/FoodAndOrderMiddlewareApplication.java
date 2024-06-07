@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 @SpringBootApplication
 public class FoodAndOrderMiddlewareApplication {
 
-	public static void main(String[] args) {
+	public static void main(String... args) {
 		SpringApplication.run(FoodAndOrderMiddlewareApplication.class, args);
 	}
 

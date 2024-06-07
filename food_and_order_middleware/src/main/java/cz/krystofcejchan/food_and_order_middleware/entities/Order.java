@@ -22,8 +22,10 @@ public class Order implements Serializable {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(nullable = false, updatable = false)
     private String order_id;
-    @OneToMany(mappedBy = "order", cascade = CascadeType.DETACH, orphanRemoval = true)
-    private List<OrderFood> items;
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(name = "FOOD_ORDER_MAPPING", joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "food_id"))
+    private List<Food> items;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "id")
     private Table table;
@@ -33,11 +35,11 @@ public class Order implements Serializable {
     @Column(nullable = false)
     private LocalDateTime orderCreated;
     @ManyToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 
 
-    public Order(List<OrderFood> items, Table table, Double total, OrderStatus orderStatus, Customer customer) {
+    public Order(List<Food> items, Table table, Double total, OrderStatus orderStatus, Customer customer) {
         this.items = items;
         this.table = table;
         this.total = total;
@@ -46,8 +48,8 @@ public class Order implements Serializable {
         this.orderCreated = LocalDateTime.now(Clock.systemUTC());
     }
 
-    public Order(List<OrderFood> items, Table table, Customer customer) {
-        this(items, table, items.stream().map(OrderFood::getFood).mapToDouble(Food::getPrice).sum(),
+    public Order(List<Food> items, Table table, Customer customer) {
+        this(items, table, items.stream().mapToDouble(Food::getPrice).sum(),
                 OrderStatus.INIT, customer);
     }
 
