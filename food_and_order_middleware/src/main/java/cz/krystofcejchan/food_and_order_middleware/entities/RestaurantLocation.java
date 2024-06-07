@@ -21,7 +21,7 @@ public class RestaurantLocation implements Serializable {
     private Long id;
     @Column(nullable = false)
     private String location;
-    @OneToMany(mappedBy = "restaurantLocation", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "restaurantLocation", orphanRemoval = true)
     private Set<Table> tableSet;
 
 }

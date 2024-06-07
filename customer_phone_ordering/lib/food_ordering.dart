@@ -32,7 +32,7 @@ class FoodState extends State<Food> {
                 color: Colors.white,
                 child: Column(
                   children: <Widget>[
-                    _buttonGroup(),
+                    //  _buttonGroup(),
                   ],
                 ),
               ),

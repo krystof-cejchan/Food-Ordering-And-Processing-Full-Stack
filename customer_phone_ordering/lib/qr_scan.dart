@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:ffi';
 import 'dart:typed_data';
 
+import 'package:customer_phone_ordering/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
+import './table.dart' as t;
 
 class QrScan extends StatefulWidget {
   const QrScan({super.key});
@@ -72,8 +75,19 @@ class QrScanState extends State<QrScan> {
     );
   }
 
-  Future<String?> _scan() async {
+  void _scan() async {
     await Permission.camera.request();
-    return await scanner.scan();
+    _redirect(await scanner.scan());
+  }
+
+  void _redirect(String? s) {
+    final tableSplit = s!.split(';');
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => RestaurantMenu(t.Table(
+                int.parse(tableSplit.first),
+                tableSplit[1],
+                int.parse(tableSplit[2])))));
   }
 }

@@ -20,9 +20,9 @@ public class Food implements Serializable {
     private Long id;
     @Column(nullable = false, length = 50)
     private String title;
-    @Column(nullable = false)
-    private Short price;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id", nullable = false)
+    @Column(nullable = false, precision = 2)
+    private Double price;
+    @ManyToOne
+    @JoinColumn(name = "order_id")
     private Order order;
 }

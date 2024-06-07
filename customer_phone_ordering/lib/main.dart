@@ -1,3 +1,4 @@
+import 'package:customer_phone_ordering/menu.dart';
 import 'package:customer_phone_ordering/qr_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -18,6 +19,7 @@ class MyAppState extends State<MyApp> {
 
   final List<Widget> _widgetOptions = <Widget>[
     const QrScan(),
+    RestaurantMenu(null),
   ];
 
   @override
@@ -67,11 +69,11 @@ class MyAppState extends State<MyApp> {
                     icon: Icons.home_rounded,
                     text: "Scan",
                   ),
-                  /*GButton(
-                  icon: Icons.calendar_month_rounded,
-                  text: "AppLocalizations.of(context)!.schedule",
-                ),
-                GButton(
+                  GButton(
+                    icon: Icons.restaurant_menu_rounded,
+                    text: "Menu",
+                  ),
+                  /* GButton(
                   icon: Icons.grading_rounded,
                   text: "AppLocalizations.of(context)!.exams",
                 ),
