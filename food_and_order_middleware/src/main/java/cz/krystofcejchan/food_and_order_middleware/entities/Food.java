@@ -9,7 +9,7 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.List;
 
-@Entity
+@Entity(name = "food")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -17,11 +17,11 @@ import java.util.List;
 public class Food implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false, name = "id")
     private Long id;
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 50, name = "title")
     private String title;
-    @Column(nullable = false, precision = 2)
+    @Column(nullable = false, precision = 2, name = "price")
     private Double price;
 
 }

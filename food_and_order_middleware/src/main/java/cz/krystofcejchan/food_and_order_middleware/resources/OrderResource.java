@@ -20,8 +20,8 @@ public record OrderResource(OrderService orderService) {
     }
 
     @GetMapping("/getFood/{order-id}")
-    public @NotNull ResponseEntity<List<Food>> getFoodFromOrder(@PathVariable("order-id") String orderId) {
-        final List<Food> found = orderService.findFoodByOrderId(orderId);
+    public @NotNull ResponseEntity<List<Object>> getFoodFromOrder(@PathVariable("order-id") String orderId) {
+        final List<Object> found = orderService.findFoodByOrderId(orderId);
         return new ResponseEntity<>(found, HttpStatus.OK);
     }
 }

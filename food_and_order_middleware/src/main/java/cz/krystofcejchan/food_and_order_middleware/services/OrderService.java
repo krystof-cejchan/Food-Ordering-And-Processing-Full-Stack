@@ -42,7 +42,7 @@ public class OrderService {
         return orderRepository.findById(id).orElseThrow(() -> new EntityNotFound(this));
     }
 
-    public List<Food> findFoodByOrderId(String id) {
-        return orderRepository.findById(id).orElseThrow(EntityNotFound::new).getItems();
+    public List<Object> findFoodByOrderId(String id) {
+        return orderRepository.findAllByOrderId(id);
     }
 }
