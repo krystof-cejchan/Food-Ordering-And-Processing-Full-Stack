@@ -1,4 +1,4 @@
-package cz.krystofcejchan.food_status_middleware.config;
+package cz.krystofcejchan.food_and_order_middleware.configuration;
 
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;

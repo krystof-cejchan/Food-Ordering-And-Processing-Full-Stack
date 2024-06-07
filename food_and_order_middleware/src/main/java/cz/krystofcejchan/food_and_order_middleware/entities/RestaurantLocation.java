@@ -1,11 +1,19 @@
-package cz.krystofcejchan.food_and_order_middleware;
+package cz.krystofcejchan.food_and_order_middleware.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Set;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class RestaurantLocation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,36 +24,4 @@ public class RestaurantLocation implements Serializable {
     @OneToMany(mappedBy = "restaurantLocation", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Table> tableSet;
 
-    public RestaurantLocation(Long id, String location, Set<Table> tableSet) {
-        this.id = id;
-        this.location = location;
-        this.tableSet = tableSet;
-    }
-
-    public RestaurantLocation() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public Set<Table> getTableSet() {
-        return tableSet;
-    }
-
-    public void setTableSet(Set<Table> tableSet) {
-        this.tableSet = tableSet;
-    }
 }
