@@ -9,7 +9,8 @@ export class AppComponent {
   public now: String = new Date().toLocaleString();
 
   constructor() {
-      setInterval(() => {
-        this.now = new Date().toLocaleString();
-      }, 1);
-  }}
+    setInterval(() => {
+      this.now = new Date().toLocaleString();
+    }, 1);
+  }
+}

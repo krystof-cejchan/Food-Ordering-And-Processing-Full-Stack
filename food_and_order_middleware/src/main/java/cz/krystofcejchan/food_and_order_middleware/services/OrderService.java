@@ -2,9 +2,9 @@ package cz.krystofcejchan.food_and_order_middleware.services;
 
 import cz.krystofcejchan.food_and_order_middleware.entities.Food;
 import cz.krystofcejchan.food_and_order_middleware.entities.Order;
-import cz.krystofcejchan.food_and_order_middleware.entities.Table;
 import cz.krystofcejchan.food_and_order_middleware.repositories.FoodRepository;
 import cz.krystofcejchan.food_and_order_middleware.repositories.OrderRepository;
+import cz.krystofcejchan.food_and_order_middleware.repositories.TableRepository;
 import cz.krystofcejchan.food_and_order_middleware.support_classes.enums.OrderStatus;
 import cz.krystofcejchan.food_and_order_middleware.support_classes.exceptions.EntityNotFound;
 import org.jetbrains.annotations.Contract;
@@ -20,12 +20,15 @@ import java.util.List;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final FoodRepository foodRepository;
+    private final TableRepository tableRepository;
+
 
     @Contract(pure = true)
     @Autowired
-    public OrderService(OrderRepository orderRepository, FoodRepository foodRepository) {
+    public OrderService(OrderRepository orderRepository, FoodRepository foodRepository, TableRepository tableRepository) {
         this.orderRepository = orderRepository;
         this.foodRepository = foodRepository;
+        this.tableRepository = tableRepository;
     }
 
     public Order addOrder(@NotNull Order order) {
@@ -43,8 +46,8 @@ public class OrderService {
         return orderRepository.findById(id).orElseThrow(() -> new EntityNotFound(this));
     }
 
-    public List<Order> getActiveOrders(Long table){
-        return orderRepository.findAllByTableIdAndOrderStatusIn(table, OrderStatus.SENT, OrderStatus.BEING_PREPARED);
+    public List<Order> getActiveOrders(Long tableId) {
+        return orderRepository.findAllByTableIdAndOrderStatusIn(tableId, OrderStatus.SENT, OrderStatus.BEING_PREPARED);
     }
 
     public List<Object> findFoodByOrderId(String id) {

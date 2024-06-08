@@ -1,1 +1,1 @@
-interface Staff{}
+export interface Staff{}
