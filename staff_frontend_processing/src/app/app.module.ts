@@ -7,6 +7,7 @@ import { OrdersOverviewComponent } from './orders-overview/orders-overview.compo
 import { HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppRoutingModule,
     HttpClientModule,
     MatSnackBarModule,
-    BrowserAnimationsModule,],
+    BrowserAnimationsModule,
+    NgbModule,],
   providers: [],
   bootstrap: [AppComponent]
 })

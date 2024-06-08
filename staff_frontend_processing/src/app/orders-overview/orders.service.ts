@@ -9,11 +9,16 @@ import { Order } from '../classes/order';
 })
 export class OrdersService {
 
-  private serverUrl = environment.activeOrders;
+  private activeOrdersUrl = environment.activeOrders;
+  private orderUrl = environment.orders;
 
   constructor(private http: HttpClient) { }
 
   public getAllActiveOrdersForRestaurant(id: number): Observable<Order[]> {
-    return this.http.get<Order[]>(`${this.serverUrl}/${id}`);
+    return this.http.get<Order[]>(`${this.activeOrdersUrl}/${id}`);
+  }
+
+  public updateOrderStatus(order: Order): Observable<Order> {
+    return this.http.patch<Order>(`${this.orderUrl}/progressByOne/${order.order_id}`, "");
   }
 }
