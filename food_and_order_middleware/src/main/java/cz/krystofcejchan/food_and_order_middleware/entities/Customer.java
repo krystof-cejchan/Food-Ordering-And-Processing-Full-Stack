@@ -1,12 +1,13 @@
 package cz.krystofcejchan.food_and_order_middleware.entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -19,7 +20,4 @@ public class Customer {
     private String customer_id;
     private String name;
     private String lastName;
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Order> orders;
-
 }

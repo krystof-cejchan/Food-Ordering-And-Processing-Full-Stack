@@ -2,6 +2,7 @@ package cz.krystofcejchan.food_and_order_middleware.services;
 
 import cz.krystofcejchan.food_and_order_middleware.entities.Food;
 import cz.krystofcejchan.food_and_order_middleware.entities.Order;
+import cz.krystofcejchan.food_and_order_middleware.entities.Table;
 import cz.krystofcejchan.food_and_order_middleware.repositories.FoodRepository;
 import cz.krystofcejchan.food_and_order_middleware.repositories.OrderRepository;
 import cz.krystofcejchan.food_and_order_middleware.support_classes.enums.OrderStatus;
@@ -28,7 +29,7 @@ public class OrderService {
     }
 
     public Order addOrder(@NotNull Order order) {
-        order.setOrderStatus(OrderStatus.INIT);
+        order.setOrderStatus(OrderStatus.SENT);
         order.setOrderCreated(LocalDateTime.now(Clock.systemUTC()));
         order.setTotal(order.getItems()
                 .stream()
@@ -40,6 +41,10 @@ public class OrderService {
 
     public Order findById(String id) {
         return orderRepository.findById(id).orElseThrow(() -> new EntityNotFound(this));
+    }
+
+    public List<Order> getActiveOrders(Long table){
+        return orderRepository.findAllByTableIdAndOrderStatusIn(table, OrderStatus.SENT, OrderStatus.BEING_PREPARED);
     }
 
     public List<Object> findFoodByOrderId(String id) {

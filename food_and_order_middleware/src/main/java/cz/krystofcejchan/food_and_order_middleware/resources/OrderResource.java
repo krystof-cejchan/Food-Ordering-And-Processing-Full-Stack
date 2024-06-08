@@ -1,6 +1,5 @@
 package cz.krystofcejchan.food_and_order_middleware.resources;
 
-import cz.krystofcejchan.food_and_order_middleware.entities.Food;
 import cz.krystofcejchan.food_and_order_middleware.entities.Order;
 import cz.krystofcejchan.food_and_order_middleware.services.OrderService;
 import org.jetbrains.annotations.NotNull;
@@ -22,6 +21,12 @@ public record OrderResource(OrderService orderService) {
     @GetMapping("/getFood/{order-id}")
     public @NotNull ResponseEntity<List<Object>> getFoodFromOrder(@PathVariable("order-id") String orderId) {
         final List<Object> found = orderService.findFoodByOrderId(orderId);
+        return new ResponseEntity<>(found, HttpStatus.OK);
+    }
+
+    @GetMapping("/getActive/{restaurant-id}")
+    public @NotNull ResponseEntity<List<Order>> getAllActiveOrders(@PathVariable("restaurant-id") Long tableId) {
+        final List<Order> found = orderService.getActiveOrders(tableId);
         return new ResponseEntity<>(found, HttpStatus.OK);
     }
 }

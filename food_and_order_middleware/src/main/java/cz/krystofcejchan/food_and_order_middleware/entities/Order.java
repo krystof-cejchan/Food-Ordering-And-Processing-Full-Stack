@@ -31,38 +31,30 @@ public class Order implements Serializable {
     private Table table;
     @Column(nullable = false)
     private Double total;
+    @Column(columnDefinition = "integer default 0")
     private OrderStatus orderStatus;
     @Column(nullable = false)
     private LocalDateTime orderCreated;
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "customer_id")
     private Customer customer;
+    @OneToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(nullable = true, updatable = true, name = "staff_id")
+    private Staff assignedStaff;
 
 
-    public Order(List<Food> items, Table table, Double total, OrderStatus orderStatus, Customer customer) {
+    public Order(List<Food> items, Table table, Double total, OrderStatus orderStatus, Customer customer, Staff assignedStaff) {
         this.items = items;
         this.table = table;
         this.total = total;
         this.orderStatus = orderStatus;
         this.customer = customer;
+        this.assignedStaff=assignedStaff;
         this.orderCreated = LocalDateTime.now(Clock.systemUTC());
     }
 
-    public Order(List<Food> items, Table table, Customer customer) {
+    public Order(List<Food> items, Table table, Customer customer, Staff staff) {
         this(items, table, items.stream().mapToDouble(Food::getPrice).sum(),
-                OrderStatus.INIT, customer);
-    }
-
-    @Override
-    public String toString() {
-        return "Order{" +
-                "order_id='" + order_id + '\'' +
-                ", items=" + items.size() +
-                ", table=" + table +
-                ", total=" + total +
-                ", orderStatus=" + orderStatus +
-                ", orderCreated=" + orderCreated +
-                ", customer=" + customer +
-                '}';
+                OrderStatus.INIT, customer, staff);
     }
 }
