@@ -6,7 +6,7 @@ import 'package:customer_phone_ordering/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
-import './table.dart' as t;
+import 'classes/table.dart' as t;
 
 class QrScan extends StatefulWidget {
   const QrScan({super.key});
@@ -82,6 +82,7 @@ class QrScanState extends State<QrScan> {
 
   void _redirect(String? s) {
     final tableSplit = s!.split(';');
+    //TODO do not redirect, just change widget above menu
     Navigator.push(
         context,
         MaterialPageRoute(

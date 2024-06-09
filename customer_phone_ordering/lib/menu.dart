@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:customer_phone_ordering/classes/basket_order.dart';
+import 'package:customer_phone_ordering/classes/response_extension.dart';
 import 'package:customer_phone_ordering/food.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import './table.dart' as t;
+import 'classes/table.dart' as t;
 import 'package:http/http.dart' as http;
 
 class RestaurantMenu extends StatefulWidget {
@@ -53,12 +55,16 @@ class RestaurantMenuState extends State<RestaurantMenu>
             ],
           ),*/
           endActionPane: ActionPane(
-            dismissible: DismissiblePane(onDismissed: () {}),
+            dismissible: DismissiblePane(
+              onDismissed: () => BasketItemHolder().add(food[index]),
+              //TODO dismissed disappers
+              confirmDismiss: () => Future.value(true),
+            ),
             motion: const ScrollMotion(),
             children: [
               SlidableAction(
                 flex: 2,
-                onPressed: (_) => controller.openEndActionPane(),
+                onPressed: (_) => BasketItemHolder().add(food[index]),
                 backgroundColor: const Color.fromARGB(255, 55, 135, 255),
                 foregroundColor: Colors.white,
                 icon: Icons.add_shopping_cart_rounded,
@@ -72,12 +78,7 @@ class RestaurantMenuState extends State<RestaurantMenu>
                 title: Text(food[index].title),
                 subtitle: Text(food[index].price.toString()),
                 leading: Text(food[index].id.toString()),
-                onTap: () {
-                  /*Navigator.push(
-            context,
-            //MaterialPageRoute(builder: (context) => DetailPage(index))
-          );*/
-                },
+                onTap: () => BasketItemHolder().add(food[index]),
               )),
         );
       },
@@ -86,14 +87,14 @@ class RestaurantMenuState extends State<RestaurantMenu>
 
   void _fetchFood() {
     http.get(Uri.http('localhost:8080', '/food/all')).then((value) => {
-          if (value.statusCode >= 200 && value.statusCode < 300)
+          if (value.ok)
             {
               setState(() => food = (jsonDecode(value.body) as List<dynamic>)
                   .map((json) => Food.fromJson(json as Map<String, dynamic>))
                   .toList())
             }
           else
-            {throw Exception('Failed to load food')}
+            throw Exception('Failed to load food')
         });
   }
 }
