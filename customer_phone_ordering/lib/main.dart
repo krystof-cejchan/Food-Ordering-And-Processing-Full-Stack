@@ -1,6 +1,6 @@
-import 'package:customer_phone_ordering/basket.dart';
-import 'package:customer_phone_ordering/menu.dart';
-import 'package:customer_phone_ordering/qr_scan.dart';
+import 'package:customer_phone_ordering/nav_items/basket.dart';
+import 'package:customer_phone_ordering/nav_items/menu.dart';
+import 'package:customer_phone_ordering/nav_items/qr_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
@@ -20,8 +20,8 @@ class MyAppState extends State<MyApp> {
 
   final List<Widget> _widgetOptions = <Widget>[
     const QrScan(),
-    RestaurantMenu(null),
-    const Basket(),
+    const RestaurantMenu(null),
+    const Basket(null),
   ];
 
   @override
@@ -37,7 +37,7 @@ class MyAppState extends State<MyApp> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.background,
           elevation: 20,
-          title: const Text("UniApp > ",
+          title: const Text("Olomouc Fried Chicken",
               style: TextStyle(fontWeight: FontWeight.w600)),
         ),
         body: _widgetOptions.elementAt(_selectedIndex),
@@ -77,7 +77,7 @@ class MyAppState extends State<MyApp> {
                   ),
                   GButton(
                     icon: Icons.shopping_basket_rounded,
-                    text: "Baket",
+                    text: "Basket",
                   ),
                   /* GButton(
                   icon: Icons.grading_rounded,

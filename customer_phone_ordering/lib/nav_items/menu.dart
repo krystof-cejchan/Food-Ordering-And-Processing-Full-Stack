@@ -2,23 +2,22 @@ import 'dart:convert';
 
 import 'package:customer_phone_ordering/classes/basket_order.dart';
 import 'package:customer_phone_ordering/classes/response_extension.dart';
-import 'package:customer_phone_ordering/food.dart';
+import 'package:customer_phone_ordering/classes/food.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'classes/table.dart' as t;
+import '../classes/table.dart' as t;
 import 'package:http/http.dart' as http;
 
 class RestaurantMenu extends StatefulWidget {
-  RestaurantMenu(t.Table? table, {super.key});
-  t.Table? table;
+  const RestaurantMenu(this.table, {super.key});
+  final t.Table? table;
   @override
   RestaurantMenuState createState() => RestaurantMenuState();
 }
 
 class RestaurantMenuState extends State<RestaurantMenu>
     with SingleTickerProviderStateMixin {
-  //get food from backend
-  late List<Food> food = [];
+  late List<Food> food = []; // from backend via _fetchFood()
   late final controller = SlidableController(this);
   @override
   initState() {
@@ -33,7 +32,7 @@ class RestaurantMenuState extends State<RestaurantMenu>
       itemCount: food.length,
       itemBuilder: (_, index) {
         return Slidable(
-          key: const ValueKey(0),
+          key: const ValueKey<int>(0),
           /*startActionPane: ActionPane(
             motion: const ScrollMotion(),
             dismissible: DismissiblePane(onDismissed: () {}),

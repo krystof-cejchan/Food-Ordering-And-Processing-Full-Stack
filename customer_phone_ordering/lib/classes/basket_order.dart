@@ -1,4 +1,4 @@
-import 'package:customer_phone_ordering/food.dart';
+import 'package:customer_phone_ordering/classes/food.dart';
 
 /// singleton design pattern
 class BasketItemHolder {

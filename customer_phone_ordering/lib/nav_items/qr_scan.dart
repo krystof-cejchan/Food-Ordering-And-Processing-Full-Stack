@@ -1,12 +1,10 @@
-import 'dart:async';
-import 'dart:ffi';
 import 'dart:typed_data';
 
-import 'package:customer_phone_ordering/menu.dart';
+import 'package:customer_phone_ordering/nav_items/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
-import 'classes/table.dart' as t;
+import '../classes/table.dart' as t;
 
 class QrScan extends StatefulWidget {
   const QrScan({super.key});
