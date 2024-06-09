@@ -14,8 +14,9 @@ import { OrderStatus } from '../classes/order_status';
   styleUrls: ['./orders-overview.component.sass']
 })
 export class OrdersOverviewComponent implements OnInit, OnDestroy {
-  private subSink: SubSink = new SubSink();
+  private readonly subSink: SubSink = new SubSink();
   public orders: Order[] = [];
+  private readonly invisibleOrderStatus: OrderStatus[] = [OrderStatus.BEING_DELIVERED, OrderStatus.FINISHED, OrderStatus.CANCELED];
 
   constructor(private service: OrdersService, private snackBar: MatSnackBar) {
   }
@@ -37,22 +38,24 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
 
   orderImportanceColour(order: Order): string {
     switch (OrderStatus[order.orderStatus as keyof typeof OrderStatus]) {
-      case OrderStatus.INIT, OrderStatus.SENT: return "info";
-      case OrderStatus.BEING_PREPARED: return "primary";
-      case OrderStatus.BEING_DELIVERED: return "warning";
-      case OrderStatus.FINISHED: return "success";
-      default: return "danger";
+      case OrderStatus.INIT, OrderStatus.SENT: return "warning";
+      case OrderStatus.BEING_PREPARED: return "success";
+      default: return "info";
     }
   }
 
   updateStatus(order: Order, i: number): void {
-    this.service.updateOrderStatus(order).subscribe({ next: (value: Order) => this.orders[i] = value });
+    this.subSink.add(this.service.updateOrderStatus(order).subscribe({
+      next: (value: Order) => this.orders[i] = value,
+      complete: () => this.orders = this.orders.filter(it => !this.invisibleOrderStatus.includes(OrderStatus[it.orderStatus as keyof typeof OrderStatus])),
+      error: () => openSnackBar(this.snackBar)
+    }));
   }
 
-  public toLocalDate(date: Date):string{
+  public toLocalDate(date: Date): string {
     return date.toLocaleString();
   }
-  
+
 
   ngOnDestroy(): void {
     this.subSink.unsubscribe()

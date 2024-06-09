@@ -1,3 +1,4 @@
+import 'package:customer_phone_ordering/basket.dart';
 import 'package:customer_phone_ordering/menu.dart';
 import 'package:customer_phone_ordering/qr_scan.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,7 @@ class MyAppState extends State<MyApp> {
   final List<Widget> _widgetOptions = <Widget>[
     const QrScan(),
     RestaurantMenu(null),
+    const Basket(),
   ];
 
   @override
@@ -72,6 +74,10 @@ class MyAppState extends State<MyApp> {
                   GButton(
                     icon: Icons.restaurant_menu_rounded,
                     text: "Menu",
+                  ),
+                  GButton(
+                    icon: Icons.shopping_basket_rounded,
+                    text: "Baket",
                   ),
                   /* GButton(
                   icon: Icons.grading_rounded,
