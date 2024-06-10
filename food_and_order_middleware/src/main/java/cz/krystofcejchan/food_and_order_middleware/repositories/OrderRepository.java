@@ -18,5 +18,5 @@ public interface OrderRepository extends CrudRepository<Order, String> {
     WHERE o.order_id = ?1""", nativeQuery = true)
     List<Object> findAllByOrderId(String orderId);
 
-    List<Order> findAllByTableIdAndOrderStatusIn(Long tableId, OrderStatus... orderStatuses);
+    List<Order> findAllByTableIdAndOrderStatusIn(Long restaurantLocation, OrderStatus... orderStatuses);
 }

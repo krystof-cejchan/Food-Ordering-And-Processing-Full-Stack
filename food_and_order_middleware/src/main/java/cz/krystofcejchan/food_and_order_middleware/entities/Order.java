@@ -22,11 +22,11 @@ public class Order implements Serializable {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(nullable = false, updatable = false)
     private String order_id;
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(name = "FOOD_ORDER_MAPPING", joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "food_id"))
     private List<Food> items;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(referencedColumnName = "id")
     private Table table;
     @Column(nullable = false)
@@ -49,7 +49,7 @@ public class Order implements Serializable {
         this.total = total;
         this.orderStatus = orderStatus;
         this.customer = customer;
-        this.assignedStaff=assignedStaff;
+        this.assignedStaff = assignedStaff;
         this.orderCreated = LocalDateTime.now(Clock.systemUTC());
     }
 

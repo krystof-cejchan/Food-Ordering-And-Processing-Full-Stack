@@ -5,6 +5,7 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { openSnackBar } from '../classes/snack-bar/snack-bar-component';
 import { Order } from "../classes/order";
 import { OrderStatus } from '../classes/order_status';
+import { RxStompService } from '../rx_stomp/RxStompService';
 
 
 
@@ -18,10 +19,14 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
   public orders: Order[] = [];
   private readonly invisibleOrderStatus: OrderStatus[] = [OrderStatus.BEING_DELIVERED, OrderStatus.FINISHED, OrderStatus.CANCELED];
 
-  constructor(private service: OrdersService, private snackBar: MatSnackBar) {
+  constructor(private service: OrdersService, private rxStompService: RxStompService, private snackBar: MatSnackBar) {
   }
 
   ngOnInit(): void {
+   this.rxStompService.publish({ destination: '/app/new-records', body: "1" });  
+    this.subSink.add(
+      this.rxStompService.watch({ destination: "/topic/records/1" }).subscribe((msg) => console.log(msg.body))
+    );
     this.subSink.add(this.service.getAllActiveOrdersForRestaurant(1).subscribe(
       {
         next: async (response: Order[]) => {

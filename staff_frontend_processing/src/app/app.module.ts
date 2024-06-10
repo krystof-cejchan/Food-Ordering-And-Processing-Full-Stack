@@ -8,6 +8,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { RxStompService } from './rx_stomp/RxStompService';
+import { rxStompServiceFactory } from './rx_stomp/RxStompFactory';
+
 
 @NgModule({
   declarations: [
@@ -21,7 +24,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     MatSnackBarModule,
     BrowserAnimationsModule,
     NgbModule,],
-  providers: [],
+  providers: [{
+    provide: RxStompService,
+    useFactory: rxStompServiceFactory,
+  },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

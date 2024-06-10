@@ -49,8 +49,8 @@ public class OrderService {
         return orderRepository.findById(id).orElseThrow(() -> new EntityNotFound(this));
     }
 
-    public List<Order> getActiveOrders(Long tableId) {
-        return orderRepository.findAllByTableIdAndOrderStatusIn(tableId, OrderStatus.SENT, OrderStatus.BEING_PREPARED);
+    public List<Order> getActiveOrders(Long restaurantLocation) {
+        return orderRepository.findAllByTableIdAndOrderStatusIn(restaurantLocation, OrderStatus.SENT, OrderStatus.BEING_PREPARED);
     }
 
     public List<Object> findFoodByOrderId(String id) {
