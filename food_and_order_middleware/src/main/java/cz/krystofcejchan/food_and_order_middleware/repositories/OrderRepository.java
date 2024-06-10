@@ -11,12 +11,19 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends CrudRepository<Order, String> {
     @Query(value = """
-    SELECT f.id, f.title, f.price
-    FROM food f
-    INNER JOIN food_order_mapping o
-    ON o.food_id = f.id
-    WHERE o.order_id = ?1""", nativeQuery = true)
+            SELECT f.id, f.title, f.price
+            FROM food f
+            INNER JOIN food_order_mapping o
+            ON o.food_id = f.id
+            WHERE o.order_id = ?1""", nativeQuery = true)
     List<Object> findAllByOrderId(String orderId);
 
-    List<Order> findAllByTableIdAndOrderStatusIn(Long restaurantLocation, OrderStatus... orderStatuses);
+    /**
+     * Finds all {@link OrderStatus}.active {@link Order}s at {@link cz.krystofcejchan.food_and_order_middleware.entities.RestaurantLocation}
+     *
+     * @param restaurantLocation id of {@link cz.krystofcejchan.food_and_order_middleware.entities.RestaurantLocation}
+     * @param orderStatuses      {@link OrderStatus} array
+     * @return list of {@link Order}s matching the params
+     */
+    List<Order> findAllByTable_RestaurantLocation_IdAndOrderStatusIn(Long restaurantLocation, OrderStatus... orderStatuses);
 }

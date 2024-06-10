@@ -22,7 +22,7 @@ public class Table implements Serializable {
     private String row;
     @Column(nullable = false, updatable = true)
     private Integer column;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(referencedColumnName = "rest_id", nullable = false)
     private RestaurantLocation restaurantLocation;
 }

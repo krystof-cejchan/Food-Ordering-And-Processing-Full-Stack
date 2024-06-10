@@ -23,9 +23,8 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-   this.rxStompService.publish({ destination: '/app/new-records', body: "1" });  
     this.subSink.add(
-      this.rxStompService.watch({ destination: "/topic/records/1" }).subscribe((msg) => console.log(msg.body))
+      this.rxStompService.watch({ destination: "/topic/orders/1" }).subscribe((msg) => this.orders.push(JSON.parse(msg.body) as Order))
     );
     this.subSink.add(this.service.getAllActiveOrdersForRestaurant(1).subscribe(
       {

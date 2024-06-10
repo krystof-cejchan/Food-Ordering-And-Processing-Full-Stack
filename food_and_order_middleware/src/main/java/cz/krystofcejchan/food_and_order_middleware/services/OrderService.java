@@ -11,6 +11,7 @@ import cz.krystofcejchan.food_and_order_middleware.support_classes.exceptions.En
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.Clock;
@@ -22,16 +23,19 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final FoodRepository foodRepository;
     private final StaffRepository staffRepository;
+
     private final TableRepository tableRepository;
+    private final SimpMessagingTemplate messagingTemplate;
 
 
     @Contract(pure = true)
     @Autowired
-    public OrderService(OrderRepository orderRepository, FoodRepository foodRepository, StaffRepository staffRepository, TableRepository tableRepository) {
+    public OrderService(OrderRepository orderRepository, FoodRepository foodRepository, StaffRepository staffRepository, TableRepository tableRepository, SimpMessagingTemplate messagingTemplate) {
         this.orderRepository = orderRepository;
         this.foodRepository = foodRepository;
         this.staffRepository = staffRepository;
         this.tableRepository = tableRepository;
+        this.messagingTemplate = messagingTemplate;
     }
 
     public Order addOrder(@NotNull Order order) {
@@ -42,7 +46,22 @@ public class OrderService {
                 .map(food -> foodRepository.getReferenceById(food.getId()))
                 .mapToDouble(Food::getPrice)
                 .sum());
-        return orderRepository.save(order);
+        final var savedOrder = orderRepository.save(order);
+        final var restaurantFromSavedOrder = tableRepository.findById(savedOrder.getTable().getId())
+                .orElseThrow()
+                .getRestaurantLocation().getId();
+        sendOrderUpdate(restaurantFromSavedOrder, savedOrder);
+        return savedOrder;
+    }
+
+    /**
+     * sends order notification to the frontend with the new order
+     *
+     * @param restId {@link cz.krystofcejchan.food_and_order_middleware.entities.RestaurantLocation} id
+     * @param order  newly created order
+     */
+    private void sendOrderUpdate(@NotNull Long restId, Order order) {
+        messagingTemplate.convertAndSend("/topic/orders/%s".formatted(restId), order);
     }
 
     public Order findById(String id) {
@@ -50,7 +69,7 @@ public class OrderService {
     }
 
     public List<Order> getActiveOrders(Long restaurantLocation) {
-        return orderRepository.findAllByTableIdAndOrderStatusIn(restaurantLocation, OrderStatus.SENT, OrderStatus.BEING_PREPARED);
+        return orderRepository.findAllByTable_RestaurantLocation_IdAndOrderStatusIn(restaurantLocation, OrderStatus.SENT, OrderStatus.BEING_PREPARED);
     }
 
     public List<Object> findFoodByOrderId(String id) {
