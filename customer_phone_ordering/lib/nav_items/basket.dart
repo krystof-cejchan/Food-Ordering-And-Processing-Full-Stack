@@ -1,10 +1,14 @@
+import 'dart:convert';
+
 import 'package:customer_phone_ordering/classes/basket_order.dart';
+import 'package:customer_phone_ordering/classes/order.dart';
+import 'package:customer_phone_ordering/classes/table.dart';
 import 'package:flutter/material.dart';
-import '../classes/table.dart' as t;
+import 'package:http/http.dart' as http;
+import '../classes/customer.dart';
 
 class Basket extends StatefulWidget {
-  const Basket(this.table, {super.key});
-  final t.Table? table;
+  const Basket({super.key});
 
   @override
   BasketState createState() => BasketState();
@@ -20,16 +24,21 @@ class BasketState extends State<Basket> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _getWidgetBasedOnBasketLength(),
-      floatingActionButton: FloatingActionButton.extended(
-        heroTag: this,
-        backgroundColor: Colors.green,
-        foregroundColor: Colors.black87,
-        onPressed: _sendOrder,
-        label: const Text(
-          'Send Order',
-          style: TextStyle(letterSpacing: 1),
+      floatingActionButton: Visibility(
+        //TODO table functionality needed to be added
+        visible: /*widget.table != null &&*/ BasketItemHolder().isNotEmpty(),
+        child: FloatingActionButton.extended(
+          tooltip: "Confirm and send your order",
+          heroTag: this,
+          backgroundColor: Colors.green,
+          foregroundColor: Colors.black87,
+          onPressed: _sendOrder,
+          label: const Text(
+            'Send Order',
+            style: TextStyle(letterSpacing: 1),
+          ),
+          icon: const Icon(Icons.send_rounded),
         ),
-        icon: const Icon(Icons.send_rounded),
       ),
     );
   }
@@ -61,13 +70,53 @@ class BasketState extends State<Basket> {
     }
   }
 
-  void _sendOrder() {
-    if (widget.table != null) {
-      // throw Exception
-    }
-    final order = BasketItemHolder().basketContent;
-    final table = widget.table!;
+  ///sends an order in json file format
+  ///e.g       "{"items":[{"id":2,"price":5.5,"title":"Pepsi"}],"table":{"restaurantId":1,"row":"E","column":50},"customer":{"customer_id":1}}"
 
-    // API request
+  void _sendOrder() {
+    if (!_isOrderReady()) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text(
+          "Scan QR Code on the table Or select food from the menu",
+          style: TextStyle(color: Colors.black87),
+        ),
+        duration: Duration(seconds: 2),
+        backgroundColor: Color.fromARGB(255, 255, 0, 0),
+      ));
+    } else {
+      final finalOrder =
+          Order.defFood(/*TODO customer */ Customer.id(1), CurrentTable.table!);
+      http.post(
+        Uri.http('localhost:8080', '/order/add'),
+        body: jsonEncode(finalOrder.toJson()),
+        headers: {'Content-Type': 'application/json'},
+      ).then((value) => _sentOfferResponse(value.statusCode));
+    }
   }
+
+  void _sentOfferResponse(int statuscode) {
+    final scaffold = ScaffoldMessenger.of(context);
+    if (statuscode == 201) {
+      BasketItemHolder().clear();
+      scaffold.showSnackBar(SnackBar(
+        content: const Text(
+          "Order Successfully Sent!",
+          style: TextStyle(color: Colors.black87),
+        ),
+        duration: const Duration(seconds: 2),
+        backgroundColor: Colors.lightGreenAccent,
+        action: SnackBarAction(
+            label: 'OK', onPressed: scaffold.hideCurrentSnackBar),
+      ));
+    } else {
+      scaffold.showSnackBar(const SnackBar(
+        content: Text("Order Failed to be sent"),
+        backgroundColor: Colors.redAccent,
+        duration: Duration(seconds: 3),
+      ));
+    }
+  }
+
+  bool _isOrderReady() =>
+      CurrentTable.table != null && BasketItemHolder().isNotEmpty();
 }

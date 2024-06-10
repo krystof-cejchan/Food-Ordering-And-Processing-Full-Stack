@@ -20,8 +20,8 @@ class MyAppState extends State<MyApp> {
 
   final List<Widget> _widgetOptions = <Widget>[
     const QrScan(),
-    const RestaurantMenu(null),
-    const Basket(null),
+    const RestaurantMenu(),
+    const Basket(),
   ];
 
   @override

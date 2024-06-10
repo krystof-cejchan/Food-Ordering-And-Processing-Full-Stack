@@ -5,6 +5,7 @@ import cz.krystofcejchan.food_and_order_middleware.entities.Order;
 import cz.krystofcejchan.food_and_order_middleware.repositories.FoodRepository;
 import cz.krystofcejchan.food_and_order_middleware.repositories.OrderRepository;
 import cz.krystofcejchan.food_and_order_middleware.repositories.StaffRepository;
+import cz.krystofcejchan.food_and_order_middleware.repositories.TableRepository;
 import cz.krystofcejchan.food_and_order_middleware.support_classes.enums.OrderStatus;
 import cz.krystofcejchan.food_and_order_middleware.support_classes.exceptions.EntityNotFound;
 import org.jetbrains.annotations.Contract;
@@ -21,14 +22,16 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final FoodRepository foodRepository;
     private final StaffRepository staffRepository;
+    private final TableRepository tableRepository;
 
 
     @Contract(pure = true)
     @Autowired
-    public OrderService(OrderRepository orderRepository, FoodRepository foodRepository, StaffRepository staffRepository) {
+    public OrderService(OrderRepository orderRepository, FoodRepository foodRepository, StaffRepository staffRepository, TableRepository tableRepository) {
         this.orderRepository = orderRepository;
         this.foodRepository = foodRepository;
         this.staffRepository = staffRepository;
+        this.tableRepository = tableRepository;
     }
 
     public Order addOrder(@NotNull Order order) {

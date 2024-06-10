@@ -81,12 +81,14 @@ class QrScanState extends State<QrScan> {
   void _redirect(String? s) {
     final tableSplit = s!.split(';');
     //TODO do not redirect, just change widget above menu
-    Navigator.push(
+    /*Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => RestaurantMenu(t.Table(
                 int.parse(tableSplit.first),
                 tableSplit[1],
-                int.parse(tableSplit[2])))));
+                int.parse(tableSplit[2])))));*/
+    t.CurrentTable.table = t.Table(int.parse(tableSplit.first),
+        int.parse(tableSplit[1]), tableSplit[2], int.parse(tableSplit[3]));
   }
 }

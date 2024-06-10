@@ -5,12 +5,10 @@ import 'package:customer_phone_ordering/classes/response_extension.dart';
 import 'package:customer_phone_ordering/classes/food.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import '../classes/table.dart' as t;
 import 'package:http/http.dart' as http;
 
 class RestaurantMenu extends StatefulWidget {
-  const RestaurantMenu(this.table, {super.key});
-  final t.Table? table;
+  const RestaurantMenu({super.key});
   @override
   RestaurantMenuState createState() => RestaurantMenuState();
 }
@@ -28,60 +26,46 @@ class RestaurantMenuState extends State<RestaurantMenu>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: ListView.builder(
-      itemCount: food.length,
-      itemBuilder: (_, index) {
-        return Slidable(
-          key: const ValueKey<int>(0),
-          /*startActionPane: ActionPane(
-            motion: const ScrollMotion(),
-            dismissible: DismissiblePane(onDismissed: () {}),
-            children: const [
-              SlidableAction(
-                onPressed: null,
-                backgroundColor: Color(0xFFFE4A49),
-                foregroundColor: Colors.white,
-                icon: Icons.delete,
-                label: 'Delete',
-              ),
-              SlidableAction(
-                onPressed: null,
-                backgroundColor: Color(0xFF21B7CA),
-                foregroundColor: Colors.white,
-                icon: Icons.share,
-                label: 'Share',
-              ),
-            ],
-          ),*/
-          endActionPane: ActionPane(
-            dismissible: DismissiblePane(
-              onDismissed: () => BasketItemHolder().add(food[index]),
-              //TODO dismissed disappers
-              confirmDismiss: () => Future.value(true),
-            ),
-            motion: const ScrollMotion(),
-            children: [
-              SlidableAction(
-                flex: 2,
-                onPressed: (_) => BasketItemHolder().add(food[index]),
-                backgroundColor: const Color.fromARGB(255, 55, 135, 255),
-                foregroundColor: Colors.white,
-                icon: Icons.add_shopping_cart_rounded,
-                label: 'Add',
-              ),
-            ],
-          ),
-          child: Container(
-              color: Colors.white,
-              child: ListTile(
-                title: Text(food[index].title),
-                subtitle: Text(food[index].price.toString()),
-                leading: Text(food[index].id.toString()),
-                onTap: () => BasketItemHolder().add(food[index]),
-              )),
-        );
-      },
-    ));
+        body: food.isNotEmpty
+            ? ListView.builder(
+                itemCount: food.length,
+                itemBuilder: (_, index) {
+                  return Slidable(
+                    key: const ValueKey<int>(0),
+                    endActionPane: ActionPane(
+                      dismissible: DismissiblePane(
+                        onDismissed: () => BasketItemHolder().add(food[index]),
+                        //TODO dismissed disappers
+                        confirmDismiss: () => Future.value(true),
+                      ),
+                      motion: const ScrollMotion(),
+                      children: [
+                        SlidableAction(
+                          flex: 2,
+                          onPressed: (_) => BasketItemHolder().add(food[index]),
+                          backgroundColor:
+                              const Color.fromARGB(255, 55, 135, 255),
+                          foregroundColor: Colors.white,
+                          icon: Icons.add_shopping_cart_rounded,
+                          label: 'Add',
+                        ),
+                      ],
+                    ),
+                    child: Container(
+                        color: Colors.white,
+                        child: ListTile(
+                          title: Text(food[index].title),
+                          subtitle: Text(food[index].price.toString()),
+                          leading: Text(food[index].id.toString()),
+                          onTap: () => BasketItemHolder().add(food[index]),
+                        )),
+                  );
+                },
+              )
+            : const Center(
+                child: Text("Could not load the menu",
+                    style: TextStyle(fontWeight: FontWeight.w300)),
+              ));
   }
 
   void _fetchFood() {

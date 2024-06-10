@@ -15,4 +15,5 @@ class Food {
       _ => throw const FormatException('Failed to load Food from json.'),
     };
   }
+  Map<String, dynamic> toJson() => {'id': id, 'price': price, 'title': title};
 }

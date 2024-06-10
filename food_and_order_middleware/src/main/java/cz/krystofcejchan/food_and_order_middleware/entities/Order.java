@@ -26,7 +26,7 @@ public class Order implements Serializable {
     @JoinTable(name = "FOOD_ORDER_MAPPING", joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "food_id"))
     private List<Food> items;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(referencedColumnName = "id")
     private Table table;
     @Column(nullable = false)

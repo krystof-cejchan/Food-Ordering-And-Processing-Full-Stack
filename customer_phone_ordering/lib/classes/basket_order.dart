@@ -24,9 +24,14 @@ class BasketItemHolder {
     _basketContent.remove(f);
   }
 
+  void clear() => _basketContent.clear();
+
   Food get(int index) => _basketContent[index];
 
   int length() => _basketContent.length;
+
+  bool isEmpty() => length() == 0;
+  bool isNotEmpty() => !isEmpty();
 
   List<Food> get basketContent => List.unmodifiable(_basketContent);
 }
