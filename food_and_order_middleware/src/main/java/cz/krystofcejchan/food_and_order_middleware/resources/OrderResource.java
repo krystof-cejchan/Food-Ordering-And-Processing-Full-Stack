@@ -16,9 +16,9 @@ import java.util.List;
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PATCH})
 public record OrderResource(OrderService orderService) {
     @PostMapping("/add")
-    public @NotNull ResponseEntity<Order> addNewOrder(@RequestBody() Order order) {
+    public @NotNull ResponseEntity<String> addNewOrder(@RequestBody() Order order) {
         final Order saved = orderService.addOrder(order);
-        return new ResponseEntity<>(saved, HttpStatus.CREATED);
+        return new ResponseEntity<>(saved.getOrder_id(), HttpStatus.CREATED);
     }
 
     @GetMapping("/getFood/{order-id}")
@@ -39,13 +39,19 @@ public record OrderResource(OrderService orderService) {
                                                               @RequestHeader(name = "progress", required = false, defaultValue = "BEING_PREPARED") String orderStatus,
                                                               @RequestHeader(name = "staff") String staffId) {
         final var changed = orderService.updateOrderStatus(orderId, OrderStatus.valueOf(orderStatus),
-                Long.parseLong(staffId));
+                Long.parseLong(staffId), null);
         return new ResponseEntity<>(changed, HttpStatus.OK);
     }
 
     @PatchMapping("/progressByOne/{orderId}")
-    public @NotNull ResponseEntity<Order> updateOrderProgressByOne(@PathVariable("orderId") String orderId) {
-        final var changed = orderService.updateOrderStatusByOne(orderId);
+    public @NotNull ResponseEntity<Order> updateOrderProgressByOne(@PathVariable("orderId") String orderId, @RequestHeader(name = "staffId") String staffId) {
+        final var changed = orderService.updateOrderStatusByOne(orderId, Long.parseLong(staffId));
         return new ResponseEntity<>(changed, HttpStatus.OK);
+    }
+
+    @Contract(" -> new")
+    @GetMapping("/status/all")
+    public @NotNull ResponseEntity<OrderStatus[]> getAllOrderStatus() {
+        return new ResponseEntity<>(OrderStatus.values(), HttpStatus.OK);
     }
 }

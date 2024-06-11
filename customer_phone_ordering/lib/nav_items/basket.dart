@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:customer_phone_ordering/classes/basket_order.dart';
 import 'package:customer_phone_ordering/classes/order.dart';
 import 'package:customer_phone_ordering/classes/table.dart';
+import 'package:customer_phone_ordering/nav_items/order_progress.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../classes/customer.dart';
@@ -90,29 +92,34 @@ class BasketState extends State<Basket> {
         Uri.http('localhost:8080', '/order/add'),
         body: jsonEncode(finalOrder.toJson()),
         headers: {'Content-Type': 'application/json'},
-      ).then((value) => _sentOfferResponse(value.statusCode));
+      ).then((value) => _sentOfferResponse(value));
     }
   }
 
-  void _sentOfferResponse(int statuscode) {
+  void _sentOfferResponse(http.Response httpResponse) {
     final scaffold = ScaffoldMessenger.of(context);
-    if (statuscode == 201) {
+    if (httpResponse.statusCode == 201) {
       BasketItemHolder().clear();
+      setState(() {});
       scaffold.showSnackBar(SnackBar(
         content: const Text(
           "Order Successfully Sent!",
           style: TextStyle(color: Colors.black87),
         ),
-        duration: const Duration(seconds: 2),
+        duration: const Duration(seconds: 5),
         backgroundColor: Colors.lightGreenAccent,
         action: SnackBarAction(
             label: 'OK', onPressed: scaffold.hideCurrentSnackBar),
       ));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => OrderProgress(httpResponse.body)));
     } else {
       scaffold.showSnackBar(const SnackBar(
         content: Text("Order Failed to be sent"),
         backgroundColor: Colors.redAccent,
-        duration: Duration(seconds: 3),
+        duration: Duration(seconds: 5),
       ));
     }
   }

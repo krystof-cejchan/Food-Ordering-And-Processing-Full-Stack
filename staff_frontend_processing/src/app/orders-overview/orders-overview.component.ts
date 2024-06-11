@@ -16,7 +16,7 @@ import { RxStompService } from '../rx_stomp/RxStompService';
 })
 export class OrdersOverviewComponent implements OnInit, OnDestroy {
   private readonly subSink: SubSink = new SubSink();
-  public orders: Order[] = [];
+  orders: Order[] = [];
   private readonly invisibleOrderStatus: OrderStatus[] = [OrderStatus.BEING_DELIVERED, OrderStatus.FINISHED, OrderStatus.CANCELED];
 
   constructor(private service: OrdersService, private rxStompService: RxStompService, private snackBar: MatSnackBar) {
@@ -24,8 +24,8 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subSink.add(
-      this.rxStompService.watch({ destination: "/topic/orders/1" }).subscribe((msg) => this.orders.push(JSON.parse(msg.body) as Order))
-    );
+      this.rxStompService.watch({ destination: "/topic/orders/new-frontend/1" })
+        .subscribe((msg) => this.orders.push(JSON.parse(msg.body) as Order)));
     this.subSink.add(this.service.getAllActiveOrdersForRestaurant(1).subscribe(
       {
         next: async (response: Order[]) => {

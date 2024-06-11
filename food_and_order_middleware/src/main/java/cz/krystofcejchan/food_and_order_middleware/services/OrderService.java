@@ -10,6 +10,7 @@ import cz.krystofcejchan.food_and_order_middleware.support_classes.enums.OrderSt
 import cz.krystofcejchan.food_and_order_middleware.support_classes.exceptions.EntityNotFound;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -61,7 +62,11 @@ public class OrderService {
      * @param order  newly created order
      */
     private void sendOrderUpdate(@NotNull Long restId, Order order) {
-        messagingTemplate.convertAndSend("/topic/orders/%s".formatted(restId), order);
+        messagingTemplate.convertAndSend("/topic/orders/new-frontend/%s".formatted(restId), order);
+    }
+
+    private void sendOrderStatus(@NotNull String orderId, OrderStatus orderStatus) {
+        messagingTemplate.convertAndSend("/topic/orders/status-update/%s".formatted(orderId), orderStatus);
     }
 
     public Order findById(String id) {
@@ -76,17 +81,17 @@ public class OrderService {
         return orderRepository.findAllByOrderId(id);
     }
 
-    public Order updateOrderStatus(String orderId, OrderStatus orderStatus, long staffId) {
-        final var foundOrder = orderRepository.findById(orderId).orElseThrow(EntityNotFound::new);
+    public final @NotNull Order updateOrderStatus(String orderId, final OrderStatus orderStatus, long staffId, @Nullable Order foundOrder) {
+        foundOrder = foundOrder == null ? orderRepository.findById(orderId).orElseThrow(EntityNotFound::new) : foundOrder;
         final var assignedStaff = staffRepository.findById(staffId).orElseThrow(EntityNotFound::new);
         foundOrder.setOrderStatus(orderStatus);
         foundOrder.setAssignedStaff(assignedStaff);
+        sendOrderStatus(orderId, orderStatus);
         return orderRepository.save(foundOrder);
     }
 
-    public Order updateOrderStatusByOne(String orderId) {
+    public Order updateOrderStatusByOne(String orderId, long staffId) {
         final var foundOrder = orderRepository.findById(orderId).orElseThrow(EntityNotFound::new);
-        foundOrder.setOrderStatus(foundOrder.getOrderStatus().update().orElseThrow());
-        return orderRepository.save(foundOrder);
+        return this.updateOrderStatus(orderId, foundOrder.getOrderStatus().update().orElseThrow(), staffId, foundOrder);
     }
 }

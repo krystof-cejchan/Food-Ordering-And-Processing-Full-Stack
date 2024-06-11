@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 
-import 'package:customer_phone_ordering/nav_items/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
@@ -15,7 +14,6 @@ class QrScan extends StatefulWidget {
 
 class QrScanState extends State<QrScan> {
   Uint8List bytes = Uint8List(0);
-
   @override
   initState() {
     super.initState();

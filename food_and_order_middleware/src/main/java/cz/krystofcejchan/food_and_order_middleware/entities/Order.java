@@ -38,7 +38,7 @@ public class Order implements Serializable {
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "customer_id")
     private Customer customer;
-    @OneToOne(cascade = CascadeType.DETACH)
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(nullable = true, updatable = true, name = "staff_id")
     private Staff assignedStaff;
 

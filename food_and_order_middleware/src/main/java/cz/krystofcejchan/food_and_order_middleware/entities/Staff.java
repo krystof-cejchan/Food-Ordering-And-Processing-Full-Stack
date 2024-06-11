@@ -17,6 +17,6 @@ public class Staff implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-    @OneToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     private RestaurantLocation restaurantLocation;
 }

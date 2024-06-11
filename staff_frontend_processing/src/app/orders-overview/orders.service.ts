@@ -19,6 +19,10 @@ export class OrdersService {
   }
 
   public updateOrderStatus(order: Order): Observable<Order> {
-    return this.http.patch<Order>(`${this.orderUrl}/progressByOne/${order.order_id}`, "");
+    return this.http.patch<Order>(`${this.orderUrl}/progressByOne/${order.order_id}`, '', {
+      headers: {
+        'staffId': "1"//TODO staffId
+      }
+    });
   }
 }

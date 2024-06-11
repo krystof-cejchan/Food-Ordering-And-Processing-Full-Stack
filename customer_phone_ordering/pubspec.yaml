@@ -42,6 +42,7 @@ dependencies:
   google_nav_bar: ^5.0.6
   http: ^1.2.0
   flutter_slidable: ^3.1.0
+  stomp_dart_client: ^2.0.0
 
 dev_dependencies:
   flutter_test:
