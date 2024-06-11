@@ -79,21 +79,10 @@ class MyAppState extends State<MyApp> {
                     icon: Icons.shopping_basket_rounded,
                     text: "Basket",
                   ),
-                  /* GButton(
-                  icon: Icons.grading_rounded,
-                  text: "AppLocalizations.of(context)!.exams",
-                ),
-                GButton(
-                  icon: Icons.person_rounded,
-                  text: "AppLocalizations.of(context)!.profile",
-                ),
-                GButton(
-                  icon: Icons.settings_rounded,
-                  text: " AppLocalizations.of(context)!.settings",
-                ),*/
                 ],
                 selectedIndex: _selectedIndex,
                 onTabChange: (index) {
+                  //TODO this is where it is needed to be changed when routing through components
                   setState(() => _selectedIndex = index);
                 },
               ),

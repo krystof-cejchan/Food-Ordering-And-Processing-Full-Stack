@@ -21,53 +21,30 @@ class QrScanState extends State<QrScan> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[300],
-      body: Builder(
-        builder: (BuildContext context) {
-          return ListView(
-            children: <Widget>[
-              Container(
-                color: Colors.white,
-                child: Column(
-                  children: <Widget>[
-                    _buttonGroup(),
-                  ],
-                ),
-              ),
-            ],
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _buttonGroup() {
-    return Row(
-      children: <Widget>[
-        Expanded(
-          flex: 1,
-          child: SizedBox(
-            height: 120,
-            child: InkWell(
-              onTap: _scan,
-              child: Card(
-                child: Column(
-                  children: <Widget>[
-                    Expanded(
-                      flex: 2,
-                      child: Image.network(
-                          'https://cdn-icons-png.flaticon.com/512/3082/3082421.png'),
-                    ),
-                    const Divider(height: 20),
-                    const Expanded(flex: 1, child: Text("Scan")),
-                  ],
-                ),
-              ),
+    return Center(
+      child: Column(
+        children: <Widget>[
+          const SizedBox(height: 150),
+          TextButton.icon(
+            onPressed: _scan,
+            icon: const Icon(
+              Icons.qr_code_scanner_rounded,
+              size: 75,
             ),
+            label: const Text(
+              'Scan',
+              style: TextStyle(letterSpacing: 1.2, fontSize: 27),
+            ),
+            style: const ButtonStyle(alignment: Alignment.center),
           ),
-        ),
-      ],
+          const SizedBox(height: 150),
+          Center(
+            child: Text(t.CurrentTable.table != null
+                ? t.CurrentTable.table.toString()
+                : "No table scanned yet."),
+          )
+        ],
+      ),
     );
   }
 
@@ -78,15 +55,8 @@ class QrScanState extends State<QrScan> {
 
   void _redirect(String? s) {
     final tableSplit = s!.split(';');
-    //TODO do not redirect, just change widget above menu
-    /*Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => RestaurantMenu(t.Table(
-                int.parse(tableSplit.first),
-                tableSplit[1],
-                int.parse(tableSplit[2])))));*/
     t.CurrentTable.table = t.Table(int.parse(tableSplit.first),
         int.parse(tableSplit[1]), tableSplit[2], int.parse(tableSplit[3]));
+    setState(() {});
   }
 }

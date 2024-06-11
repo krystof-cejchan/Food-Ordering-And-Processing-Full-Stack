@@ -1,47 +1,39 @@
 import 'dart:async';
-import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:stomp_dart_client/stomp_dart_client.dart';
 
-// Global variable to store the result
-List<dynamic>? globalResult;
+// Declare the stompClient variable at a higher scope
+StompClient? stompClient;
 
-void onConnect(StompFrame frame) {
-  stompClient.subscribe(
-    destination: '/topic/test/subscription',
-    callback: (frame) {
-      globalResult = json.decode(frame.body!);
-      print(globalResult);
-    },
+@Deprecated("used in [order_progress] directly")
+void main() {
+  const String destination = '/topic/orders/status-update';
+
+  // Define the onConnect function within the main method scope
+  void onConnect(StompFrame frame) {
+    stompClient?.subscribe(
+      destination: destination,
+      callback: (frame) {
+        String? result = frame.body!;
+        debugPrint(result);
+      },
+    );
+  }
+
+  // Initialize the stompClient with the onConnect function
+  stompClient = StompClient(
+    config: StompConfig(
+      url: 'ws://localhost:8080/ws',
+      onConnect: onConnect,
+      beforeConnect: () async {
+        debugPrint('waiting to connect...');
+        await Future.delayed(const Duration(milliseconds: 200));
+        debugPrint('connecting...');
+      },
+      onWebSocketError: (dynamic error) => debugPrint(error.toString()),
+    ),
   );
 
-  Timer.periodic(const Duration(seconds: 10), (_) {
-    stompClient.send(
-      destination: '/app/test/endpoints',
-      body: json.encode({'a': 123}),
-    );
-  });
-}
-
-final stompClient = StompClient(
-  config: StompConfig(
-    url: 'ws://localhost:8080',
-    onConnect: onConnect,
-    beforeConnect: () async {
-      print('waiting to connect...');
-      await Future.delayed(const Duration(milliseconds: 200));
-      print('connecting...');
-    },
-    onWebSocketError: (dynamic error) => print(error.toString()),
-    stompConnectHeaders: {'Authorization': 'Bearer yourToken'},
-    webSocketConnectHeaders: {'Authorization': 'Bearer yourToken'},
-  ),
-);
-
-void main() {
-  stompClient.activate();
-}
-
-// Function to retrieve the latest result
-List<dynamic>? getResult() {
-  return globalResult;
+  // Activate the stompClient
+  stompClient?.activate();
 }

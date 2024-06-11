@@ -7,6 +7,11 @@ class Table {
 
   Map<String, dynamic> toJson() =>
       {'id': id, 'restaurantId': restaurantId, 'row': row, 'column': column};
+
+  @override
+  String toString() {
+    return [id, row, column].join(' — ');
+  }
 }
 
 mixin CurrentTable {

@@ -52,6 +52,7 @@ public class OrderService {
                 .orElseThrow()
                 .getRestaurantLocation().getId();
         sendOrderUpdate(restaurantFromSavedOrder, savedOrder);
+        sendOrderStatus(savedOrder.getOrder_id(), savedOrder.getOrderStatus());
         return savedOrder;
     }
 
@@ -66,6 +67,7 @@ public class OrderService {
     }
 
     private void sendOrderStatus(@NotNull String orderId, OrderStatus orderStatus) {
+        System.out.println(orderId);
         messagingTemplate.convertAndSend("/topic/orders/status-update/%s".formatted(orderId), orderStatus);
     }
 
