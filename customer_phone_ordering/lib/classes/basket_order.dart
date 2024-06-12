@@ -24,6 +24,10 @@ class BasketItemHolder {
     _basketContent.remove(f);
   }
 
+  void removeAt(int i) {
+    _basketContent.removeAt(i);
+  }
+
   void clear() => _basketContent.clear();
 
   Food get(int index) => _basketContent[index];

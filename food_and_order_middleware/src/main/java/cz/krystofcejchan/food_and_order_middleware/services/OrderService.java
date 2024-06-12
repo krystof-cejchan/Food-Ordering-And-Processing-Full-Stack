@@ -67,7 +67,6 @@ public class OrderService {
     }
 
     private void sendOrderStatus(@NotNull String orderId, OrderStatus orderStatus) {
-        System.out.println(orderId);
         messagingTemplate.convertAndSend("/topic/orders/status-update/%s".formatted(orderId), orderStatus);
     }
 

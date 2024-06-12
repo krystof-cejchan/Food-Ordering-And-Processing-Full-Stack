@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:customer_phone_ordering/classes/basket_order.dart';
-import 'package:customer_phone_ordering/classes/response_extension.dart';
+import 'package:customer_phone_ordering/classes/extensions/response_extension.dart';
 import 'package:customer_phone_ordering/classes/food.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
