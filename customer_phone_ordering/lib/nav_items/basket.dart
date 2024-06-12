@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:customer_phone_ordering/classes/basket_order.dart';
 import 'package:customer_phone_ordering/classes/extensions/colour_extension.dart';
+import 'package:customer_phone_ordering/classes/extensions/response_extension.dart';
 import 'package:customer_phone_ordering/classes/order.dart';
 import 'package:customer_phone_ordering/classes/order_status.dart';
 import 'package:customer_phone_ordering/classes/table.dart';
@@ -214,7 +215,7 @@ class BasketState extends State<Basket> {
 
   void _sentOfferResponse(http.Response httpResponse) {
     final scaffold = ScaffoldMessenger.of(context);
-    if (httpResponse.statusCode == 201) {
+    if (httpResponse.ok) {
       scaffold.showSnackBar(SnackBar(
         content: const Text(
           "Order Successfully Sent!",
