@@ -1,0 +1,36 @@
+name: Flutter-PhoneClient
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  get-n-test:
+    runs-on: ubuntu-latest
+
+    env:
+      working-directory: ./customer_phone_ordering
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Get dependencies
+        run: flutter pub get
+        working-directory: ${{env.working-directory}} 
+
+      - name: Run tests
+        run: flutter test
+        working-directory: ${{env.working-directory}} 
+
+      - name: Build APK
+        run: flutter build apk  
+        working-directory: ${{env.working-directory}} 
+
