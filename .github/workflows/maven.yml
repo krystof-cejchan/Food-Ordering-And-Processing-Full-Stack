@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      working-directory: ./customer_phone_ordering
+      working-directory: ./food_and_order_middleware
 
 
     steps:
