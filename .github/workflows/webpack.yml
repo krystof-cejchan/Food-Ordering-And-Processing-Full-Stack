@@ -1,0 +1,23 @@
+name: Angular — Frontend
+on:
+  push:
+    branches: [ main ]  pull_request:
+    branches: [ main ]  workflow_dispatch:jobs:
+  build:
+    env:
+      working-directory: ./staff_frontend_processing
+    runs-on: ubuntu-latest    steps:
+      - uses: actions/checkout@v2      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules        with:
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{env.working-directory}}/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-      - name: npm install and npm run CI commands
+        run: |
+          npm i
+          npm run test:ci
+          npm run build:ci
+        working-directory: ${{env.working-directory}} 
