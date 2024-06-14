@@ -1,24 +1,32 @@
 name: Angular — Frontend
+
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-  build:
+    branches:
+    - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
     env:
       working-directory: ./staff_frontend_processing
-    runs-on: ubuntu-latest    steps:
-      - uses: actions/checkout@v2      - name: Cache node modules
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-node-modules        with:
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{env.working-directory}}/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-      - name: npm install and npm run CI commands
-        run: |
-          npm i
-          npm run test:ci
-          npm run build:ci
-        working-directory: ${{env.working-directory}} 
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+
+    - name: Install dependencies
+      run: npm install
+      working-directory: ${{env.working-directory}} 
+
+    - name: Run tests
+      run: npm run test:headless
+      working-directory: ${{env.working-directory}} 
+
+    - name: Build
+      run: npm run build:prod
+      working-directory: ${{env.working-directory}} 
