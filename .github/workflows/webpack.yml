@@ -1,8 +1,9 @@
 name: Angular — Frontend
 on:
   push:
-    branches: [ main ]  pull_request:
-    branches: [ main ]  workflow_dispatch:jobs:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
   build:
     env:
       working-directory: ./staff_frontend_processing
