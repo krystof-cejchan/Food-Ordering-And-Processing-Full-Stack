@@ -27,8 +27,8 @@ class OrderService @Autowired constructor(
         order.orderStatus = OrderStatus.SENT
         order.orderCreated = LocalDateTime.now(Clock.systemUTC())
         order.total = order.items.stream()
-            .map { food -> foodRepository.getReferenceById(food.id) }
-            .mapToDouble { f -> f.price }
+            .map { foodRepository.getReferenceById(it.id) }
+            .mapToDouble { it.price }
             .sum();
         val savedOrder = orderRepository.save(order)
         val restaurantFromSavedOrder =
