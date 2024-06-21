@@ -7,6 +7,7 @@ import cz.krystofcejchan.food_and_order_middleware.repositories.StaffRepository
 import cz.krystofcejchan.food_and_order_middleware.repositories.TableRepository
 import cz.krystofcejchan.food_and_order_middleware.support_classes.enums.OrderStatus
 import cz.krystofcejchan.food_and_order_middleware.support_classes.exceptions.EntityNotFound
+import lombok.NoArgsConstructor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.stereotype.Service
@@ -14,6 +15,7 @@ import java.time.Clock
 import java.time.LocalDateTime
 
 @Service
+@NoArgsConstructor
 class OrderService @Autowired constructor(
     private val orderRepository: OrderRepository,
     private val foodRepository: FoodRepository,
@@ -24,8 +26,10 @@ class OrderService @Autowired constructor(
     fun addOrder(order: Order): Order {
         order.orderStatus = OrderStatus.SENT
         order.orderCreated = LocalDateTime.now(Clock.systemUTC())
-        order.total = order.items.stream().map { food -> foodRepository.getReferenceById(food.id) }
-            .mapToDouble { f -> f.price }.sum();
+        order.total = order.items.stream()
+            .map { food -> foodRepository.getReferenceById(food.id) }
+            .mapToDouble { f -> f.price }
+            .sum();
         val savedOrder = orderRepository.save(order)
         val restaurantFromSavedOrder =
             tableRepository.findById(savedOrder.table.id).orElseThrow { EntityNotFound() }.restaurantLocation.id;

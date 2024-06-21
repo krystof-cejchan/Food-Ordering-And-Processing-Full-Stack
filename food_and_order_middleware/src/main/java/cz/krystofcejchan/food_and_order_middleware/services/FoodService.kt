@@ -7,8 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-@JvmRecord
-data class FoodService @Contract(pure = true) @Autowired constructor(val foodRepository: FoodRepository) {
+class FoodService @Autowired constructor(private val foodRepository: FoodRepository) {
     val allFood: List<Food>
         get() = foodRepository.findAll()
 }
