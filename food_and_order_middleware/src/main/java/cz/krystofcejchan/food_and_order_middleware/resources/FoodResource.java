@@ -2,7 +2,6 @@ package cz.krystofcejchan.food_and_order_middleware.resources;
 
 import cz.krystofcejchan.food_and_order_middleware.entities.Food;
 import cz.krystofcejchan.food_and_order_middleware.services.FoodService;
-import cz.krystofcejchan.food_and_order_middleware.services.OrderService;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;

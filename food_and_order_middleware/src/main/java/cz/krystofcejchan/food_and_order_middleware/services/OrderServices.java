@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class OrderService {
+public class OrderServices {
     private final OrderRepository orderRepository;
     private final FoodRepository foodRepository;
     private final StaffRepository staffRepository;
@@ -31,7 +31,7 @@ public class OrderService {
 
     @Contract(pure = true)
     @Autowired
-    public OrderService(OrderRepository orderRepository, FoodRepository foodRepository, StaffRepository staffRepository, TableRepository tableRepository, SimpMessagingTemplate messagingTemplate) {
+    public OrderServices(OrderRepository orderRepository, FoodRepository foodRepository, StaffRepository staffRepository, TableRepository tableRepository, SimpMessagingTemplate messagingTemplate) {
         this.orderRepository = orderRepository;
         this.foodRepository = foodRepository;
         this.staffRepository = staffRepository;

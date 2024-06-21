@@ -15,8 +15,6 @@ import java.util.List;
 @Entity(name = "orders")
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -56,5 +54,69 @@ public class Order implements Serializable {
     public Order(List<Food> items, Table table, Customer customer, Staff staff) {
         this(items, table, items.stream().mapToDouble(Food::getPrice).sum(),
                 OrderStatus.INIT, customer, staff);
+    }
+
+    public String getOrder_id() {
+        return order_id;
+    }
+
+    public void setOrder_id(String order_id) {
+        this.order_id = order_id;
+    }
+
+    public List<Food> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Food> items) {
+        this.items = items;
+    }
+
+    public Table getTable() {
+        return table;
+    }
+
+    public void setTable(Table table) {
+        this.table = table;
+    }
+
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
+    }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public LocalDateTime getOrderCreated() {
+        return orderCreated;
+    }
+
+    public void setOrderCreated(LocalDateTime orderCreated) {
+        this.orderCreated = orderCreated;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Staff getAssignedStaff() {
+        return assignedStaff;
+    }
+
+    public void setAssignedStaff(Staff assignedStaff) {
+        this.assignedStaff = assignedStaff;
     }
 }
