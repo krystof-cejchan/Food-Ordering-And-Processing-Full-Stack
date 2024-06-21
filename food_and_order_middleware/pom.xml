@@ -14,7 +14,7 @@
     <name>food_and_order_middleware</name>
     <description>Middleware for food ordering app</description>
     <properties>
-        <java.version>21</java.version>
+        <java.version>17</java.version>
         <kotlin.version>1.9.24</kotlin.version>
     </properties>
     <dependencies>

@@ -3,7 +3,7 @@
     <option name="ALTERNATIVE_JRE_PATH" value="corretto-21" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
     <envs>
-      <env name="password" value="jetotereza" />
+      <env name="password" value="" />
     </envs>
     <option name="MAIN_CLASS_NAME" value="cz.krystofcejchan.food_and_order_middleware.FoodAndOrderMiddlewareApplication" />
     <module name="food_and_order_middleware" />
