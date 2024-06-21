@@ -21,6 +21,7 @@ public class JPA {
         return DataSourceBuilder.create()
                 .url("jdbc:mysql://localhost:3306/food_processing_and_order")
                 .username("root")
-                .password(System.getenv("password")).build();
+                .password(System.getenv("password"))
+                .build();
     }
 }
