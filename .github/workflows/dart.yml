@@ -30,7 +30,7 @@ jobs:
     #    run: flutter test
      #   working-directory: ${{env.working-directory}} 
 
-      - name: Build APK
-        run: flutter build apk  
-        working-directory: ${{env.working-directory}} 
+   #   - name: Build APK
+   #     run: flutter build apk  
+   #     working-directory: ${{env.working-directory}} 
 
